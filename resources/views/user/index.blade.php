@@ -31,6 +31,11 @@
             <td>{{ $dado->email }}</td>
             <td>
                  <a href='{{ route('user.edit', $dado->id) }}'> <button type="button"> </button></a>
+                 <form method="post" action="{{ route('user.destroy', $dado->id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"></button>
+                 </form>
             </td>
         </tr>
         @endforeach

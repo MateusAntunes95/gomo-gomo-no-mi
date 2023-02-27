@@ -5,6 +5,7 @@ use App\Http\Controllers\{
     HomeController,
     LoginController,
     UserController,
+    ProdutoController
     
 };
 
@@ -27,5 +28,6 @@ Route::get('home', [HomeController::class, 'index'])->name('home');
 
 Route::get('login', [LoginController::class, 'login'])->name('login');
 Route::post('login/auth', [LoginController::class, 'auth'])->name('auth');
-Route::post('login/auth', [LoginController::class, 'auth'])->name('auth');
-Route::resource('user', UserController::class);
+
+Route::resource('user', UserController::class)->except(['show']);
+Route::resource('produto', ProdutoController::class)->except(['show']);
