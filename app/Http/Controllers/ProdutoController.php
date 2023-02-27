@@ -2,72 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProdutoRequest;
 use App\Models\Produto;
+use App\Repositories\Produto\GravarRepository;
+use App\Repositories\Produto\ListarRepository;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request, ListarRepository $listarRepository)
     {
-        //
+        $dados = $listarRepository->listar($request->all())->get();
+
+        return view('produto.index')
+            ->with(compact('dados'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        info('teste');
+        return view('produto.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(StoreProdutoRequest $request, GravarRepository $gravarRepository)
     {
-        //
+        info('entrou aq');
+        if (!$gravarRepository->criaOuAtualiza($request->all())) {
+            return redirect()->back()->withErrors('Error ao salvar produto.');
+        }
+
+        return redirect()->route('produto.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Produto  $produto
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Produto $produto)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Produto  $produto
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Produto $produto)
     {
-        //
+        return view('produto.edit')
+            ->with(compact('produto'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Produto  $produto
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Produto $produto)
+    public function update(StoreProdutoRequest $request, Produto $produto, GravarRepository $gravarRepository)
     {
         //
     }
@@ -80,6 +54,8 @@ class ProdutoController extends Controller
      */
     public function destroy(Produto $produto)
     {
-        //
+       $produto->delete();
+
+       return redirect()->route('produto.index');
     }
 }
