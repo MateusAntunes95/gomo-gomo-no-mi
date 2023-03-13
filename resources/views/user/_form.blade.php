@@ -10,4 +10,4 @@
     <label> Senha </label>
     <input type="password" autocomplete="off" class="nao tem ainda" name="password" value={{ $user->password ?? ''}}>
 </div>
-<button type="submit" class="btn-submit"> Criar </button>
+<button type="submit" class="btn-submit"> Salvar </button>
